@@ -1,0 +1,106 @@
+sprites.onCreated(SpriteKind.Enemy, function (sprite) {
+    sprite.setVelocity(-50, 0)
+    sprite.setFlag(SpriteFlag.AutoDestroy, true)
+})
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    music.pewPew.play()
+    projectile = sprites.createProjectileFromSprite(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . 3 3 5 5 . . . . . . . 
+        . . . . 7 7 7 9 9 9 . . . . . . 
+        . . . . . 2 2 4 4 . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, mySprite, 50, 1)
+})
+sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
+    sprite.destroy()
+    info.changeLifeBy(-1)
+    music.jumpDown.play()
+})
+info.onLifeZero(function () {
+    game.over(false)
+})
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
+    otherSprite.destroy()
+    sprite.destroy()
+    info.changeScoreBy(1)
+    sprite.startEffect(effects.fire)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+	
+})
+let enemysprite: Sprite = null
+let projectile: Sprite = null
+let mySprite: Sprite = null
+scene.setBackgroundColor(9)
+mySprite = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    5 5 . 2 2 5 2 5 2 5 2 5 2 . . . 
+    5 . 5 2 2 5 2 5 2 5 2 5 2 . . . 
+    5 . 5 2 2 5 2 5 2 5 2 5 2 . . . 
+    5 5 . 2 2 5 2 5 2 5 2 5 2 . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.Player)
+controller.moveSprite(mySprite)
+info.setLife(3)
+game.onUpdateInterval(500, function () {
+	
+})
+game.onUpdateInterval(500, function () {
+    enemysprite = sprites.create(img`
+        ................................
+        ................................
+        ................................
+        ................................
+        ................................
+        ................................
+        .......1........................
+        ................................
+        .........ddd.......ddb..........
+        ........ddddd....ddbbb..........
+        .......2d2ddd...dbbbd...........
+        ......444dddddddddd.............
+        ......444ddddddddddd............
+        ...........dddddddddd...........
+        ...........ddddddddddd..........
+        ............ddddddddd...........
+        .................4..4...........
+        ..................4..4..........
+        ................................
+        ................................
+        ................................
+        ................................
+        ................................
+        ................................
+        ................................
+        ................................
+        ................................
+        ................................
+        ................................
+        ................................
+        ................................
+        ................................
+        `, SpriteKind.Enemy)
+    enemysprite.setPosition(randint(0, 160), randint(0, 120))
+})
